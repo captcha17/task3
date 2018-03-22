@@ -7,6 +7,17 @@ import java.util.Date;
 
 @Entity
 public class Estate {
+
+    public Estate(String street, int floors, int rooms, BigInteger price) {
+        this.street = street;
+        this.floors = floors;
+        this.rooms = rooms;
+        this.price = price;
+    }
+
+    public Estate() {
+    }
+
     @Id
     @GeneratedValue()
     private long id;
@@ -26,9 +37,9 @@ public class Estate {
     @Column
     private Date startDate;
 
-//    @ManyToOne
-//    @JoinColumn
-//    private Agent agent;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Agent agentID;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -95,13 +106,13 @@ public class Estate {
         this.startDate = startDate;
     }
 
-//    public Agent getAgent() {
-//        return agent;
-//    }
-//
-//    public void setAgent(Agent agent) {
-//        this.agent = agent;
-//    }
+    public Agent getAgentID() {
+        return agentID;
+    }
+
+    public void setAgentID(Agent agentID) {
+        this.agentID = agentID;
+    }
 
     public Month getSoldMonth() {
         return soldMonth;

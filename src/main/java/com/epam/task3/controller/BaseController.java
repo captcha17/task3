@@ -4,14 +4,14 @@ import com.epam.task3.domain.Estate;
 import com.epam.task3.domain.EstateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
+import java.util.Date;
+import java.util.Optional;
 
 @Controller
 public class BaseController {
@@ -19,37 +19,34 @@ public class BaseController {
     @Autowired
     EstateRepository estateRepository;
 
-    @RequestMapping("/")
-    public String home(Map<String, Object> model) {
-        model.put("message", "HowToDoInJava Reader !!");
-        return "index";
-    }
-
-    @GetMapping("/admin")
-    public ModelAndView admin() {
-        Estate estate = new Estate();
-        estate.setStreet("StreetTEst");
+    @GetMapping("/")
+    public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("estate", estate);
-        modelAndView.setViewName("admin");
+        modelAndView.addObject("estates",  estateRepository.findAll());
+        modelAndView.setViewName("index");
         return modelAndView;
-//        Estate estate = new Estate();
-//        estate.setStreet("StreetTEst");
-//        model.put("estate", estate);
-//        return "admin";
     }
 
-    @PostMapping(value = "/admin")
-    public void addEstate(HttpServletRequest request, HttpServletResponse response) {
-        if(request != null) {
-            String street = request.getParameter("street");
-            String rooms = request.getParameter("rooms");
-            String floors = request.getParameter("floors");
-            Estate estate = new Estate();
-            estate.setStreet(street);
-            estate.setRooms(Integer.valueOf(rooms));
-            estate.setFloors(Integer.valueOf(floors));
+    @PostMapping("/")
+    public ModelAndView form(Estate estate, Model model) {
+        ModelAndView modelAndView = new ModelAndView();
+        if (estate != null) {
+            estate.setStartDate(new Date());
+            estate.setSaleType(Estate.SaleStateType.NEW);
             estateRepository.save(estate);
         }
+        modelAndView.addObject("estates",  estateRepository.findAll());
+        modelAndView.setViewName("redirect:");
+        return modelAndView;
+    }
+
+    @PostMapping("/countUp")
+    public @ResponseBody int countUp(long id) {
+        Optional<Estate> byId = estateRepository.findById(id);
+        Estate estate = byId.get();
+        int views = estate.getViews();
+        estate.setViews(++views);
+        estateRepository.save(estate);
+        return views;
     }
 }
