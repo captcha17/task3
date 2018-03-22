@@ -24,9 +24,19 @@
             </select>
         </div>
     </div>
-    <div class="form-group">
-        <label for="price">Price</label>
-        <input type="number" name="price" class="form-control currency" id="price" placeholder="100000">
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label for="price">Price</label>
+            <input type="number" name="price" class="form-control currency" id="price" placeholder="100000">
+        </div>
+        <div class="form-group col-md-8">
+            <label for="agent">Agent</label>
+            <select id="agent" name="agent.name" class="form-control">
+                <#list agents as agent>
+                    <option>${agent.name}</option>
+                </#list>
+            </select>
+        </div>
     </div>
     <button type="submit" class="btn btn-primary">Add</button>
 </form>

@@ -5,6 +5,7 @@
         <th scope="col">Number of floors</th>
         <th scope="col">Number of rooms</th>
         <th scope="col">Price $</th>
+        <th scope="col">Agent</th>
         <th scope="col">Views</th>
         <th scope="col"></th>
     </tr>
@@ -17,6 +18,7 @@
                 <td>${estate.floors}</td>
                 <td>${estate.rooms}</td>
                 <td>${estate.price}</td>
+                <td>${estate.agent.name}</td>
                 <td id="view${estate.id}">${estate.views}</td>
                 <td><a class="link" href="#" onclick="increaseCount(${estate.id})">View</a></td>
                 <td></td>

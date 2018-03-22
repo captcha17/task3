@@ -8,11 +8,12 @@ import java.util.Date;
 @Entity
 public class Estate {
 
-    public Estate(String street, int floors, int rooms, BigInteger price) {
+    public Estate(String street, int floors, int rooms, BigInteger price, Agent agent) {
         this.street = street;
         this.floors = floors;
         this.rooms = rooms;
         this.price = price;
+        this.agent = agent;
     }
 
     public Estate() {
@@ -39,7 +40,7 @@ public class Estate {
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private Agent agentID;
+    private Agent agent;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -106,12 +107,12 @@ public class Estate {
         this.startDate = startDate;
     }
 
-    public Agent getAgentID() {
-        return agentID;
+    public Agent getAgent() {
+        return agent;
     }
 
-    public void setAgentID(Agent agentID) {
-        this.agentID = agentID;
+    public void setAgent(Agent agent) {
+        this.agent = agent;
     }
 
     public Month getSoldMonth() {

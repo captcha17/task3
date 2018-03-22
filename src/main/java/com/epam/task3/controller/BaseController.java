@@ -1,5 +1,7 @@
 package com.epam.task3.controller;
 
+import com.epam.task3.domain.Agent;
+import com.epam.task3.domain.AgentRepository;
 import com.epam.task3.domain.Estate;
 import com.epam.task3.domain.EstateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +19,16 @@ import java.util.Optional;
 public class BaseController {
 
     @Autowired
-    EstateRepository estateRepository;
+    private EstateRepository estateRepository;
 
+    @Autowired
+    private AgentRepository agentRepository;
+    
     @GetMapping("/")
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("estates",  estateRepository.findAll());
+        modelAndView.addObject("agents",  agentRepository.findAll());
         modelAndView.setViewName("index");
         return modelAndView;
     }
@@ -33,9 +39,12 @@ public class BaseController {
         if (estate != null) {
             estate.setStartDate(new Date());
             estate.setSaleType(Estate.SaleStateType.NEW);
+            Agent persistedAgent = agentRepository.findByName(estate.getAgent().getName());
+            estate.setAgent(persistedAgent);
             estateRepository.save(estate);
         }
         modelAndView.addObject("estates",  estateRepository.findAll());
+        modelAndView.addObject("agents",  agentRepository.findAll());
         modelAndView.setViewName("redirect:");
         return modelAndView;
     }
