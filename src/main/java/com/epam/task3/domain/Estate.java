@@ -8,12 +8,13 @@ import java.util.Date;
 @Entity
 public class Estate {
 
-    public Estate(String street, int floors, int rooms, BigInteger price, Agent agent) {
+    public Estate(String street, int floors, int rooms, BigInteger price, Agent agent, Status status) {
         this.street = street;
         this.floors = floors;
         this.rooms = rooms;
         this.price = price;
         this.agent = agent;
+        this.status = status;
     }
 
     public Estate() {
@@ -48,13 +49,12 @@ public class Estate {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private SaleStateType saleType;
+    private Status status;
 
     @Column
     private int views;
 
-    public enum SaleStateType {
-        NEW,
+    public enum Status {
         SALE,
         SOLD
     }
@@ -123,12 +123,12 @@ public class Estate {
         this.soldMonth = soldMonth;
     }
 
-    public SaleStateType getSaleType() {
-        return saleType;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setSaleType(SaleStateType saleType) {
-        this.saleType = saleType;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public int getViews() {
